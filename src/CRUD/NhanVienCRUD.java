@@ -252,14 +252,16 @@ public class NhanVienCRUD {
     return nhanVienList;
 }
 
-    public void deleteUser(String nhanVienID) {
+    public boolean deleteUser(String nhanVienID) {
         String query = "DELETE FROM nhanvien WHERE MaNV = ?";
 
         try (PreparedStatement statement = con.prepareStatement(query)) {
             statement.setString(1, nhanVienID);
             statement.executeUpdate();
+            return true;
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
+            return false;
         }
     }
 }

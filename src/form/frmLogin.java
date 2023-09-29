@@ -6,6 +6,8 @@ package form;
 
 import CRUD.NhanVienCRUD;
 import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
  *
@@ -13,12 +15,15 @@ import javax.swing.JOptionPane;
  */
 public class frmLogin extends javax.swing.JFrame {
     private NhanVienCRUD nhanVienCRUD;
+    private DocumentListener textChangeListener;
     /**
      * Creates new form frmLogin
      */
     public frmLogin() {
         initComponents();
         nhanVienCRUD=new NhanVienCRUD();
+        btnLogin.setEnabled(false);
+        TextChangeEvent();
     }
 
     /**
@@ -130,6 +135,35 @@ public class frmLogin extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void TextChangeEvent(){
+        textChangeListener = new DocumentListener(){
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateTextFields();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateTextFields();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                updateTextFields();
+            }
+            private void updateTextFields(){
+                if(txtUserName.getText().isEmpty() || txtPassword.getText().isEmpty()){
+                    btnLogin.setEnabled(false);
+                }
+                else
+                    btnLogin.setEnabled(true);
+            }
+        };
+        txtUserName.getDocument().addDocumentListener(textChangeListener);
+        txtPassword.getDocument().addDocumentListener(textChangeListener);
+    }
+    
+    
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         String password = new String(txtPassword.getPassword());
         
