@@ -35,23 +35,20 @@ public class NhanVienCRUD {
         }                    
     }
     
-    public boolean Login(String account, String password) {
-    String query = "SELECT Password FROM user WHERE Account = ?";
+    public boolean login(String username, String password) {
+    String query = "SELECT Password FROM nhanvien WHERE username = ?";
         try (PreparedStatement statement = con.prepareStatement(query)) {
-            statement.setString(1, account);
+            statement.setString(1, username);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    String hashedPassword = resultSet.getString("Password");
+                    String hashedPassword = resultSet.getString("password");
                     BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), hashedPassword);
                     if (result.verified) {
-                        JOptionPane.showMessageDialog(null, "Đăng nhập thành công");
                         return true;
                     } else {
-                        JOptionPane.showMessageDialog(null, "Mật khẩu không hợp lệ");
                         return false;
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Tài khoản hoặc mật khẩu không hợp lệ");
                     return false;
                 }
             }

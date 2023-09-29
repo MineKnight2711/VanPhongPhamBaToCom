@@ -4,6 +4,8 @@
  */
 package ktgiuaky_qlvpp;
 
+import form.frmLogin;
+
 /**
  *
  * @author WitherDragon
@@ -14,7 +16,8 @@ public class KTGiuaKy_QLVPP {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        frmLogin login=new frmLogin();
+        login.setVisible(true);
     }
     
 }
