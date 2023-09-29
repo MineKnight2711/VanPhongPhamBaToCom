@@ -58,12 +58,20 @@ public class NhanVienCRUD {
         }
     }
     
-    public boolean UpdateInfo(String query){
-        try{
+    public boolean update(NhanVien nv){
+        try {
+            String query = "";
+            if(nv.getPassword() == null) 
+                query = String.format("UPDATE nhanvien SET  TenNV = '%s', DiaChi = '%s', Sdt = '%s', GioiTinh = '%s', NgaySinh = '%s', CMND_CCCD = '%s' WHERE username = '%s'",
+                                    nv.getTenNV(), nv.getDiaChi(), nv.getSdt(), nv.getGioiTinh(),nv.getNgaySinh()
+                                    , nv.getCMND_CCCD(), nv.getUsername());
+            else
+                query = String.format("UPDATE nhanvien SET password = '%s' ,TenNV = '%s', DiaChi = '%s', Sdt = '%s', GioiTinh = '%s', NgaySinh = '%s', CMND_CCCD = '%s' WHERE username = '%s'",
+                                    nv.getPassword() , nv.getTenNV(), nv.getDiaChi(), nv.getSdt(), nv.getGioiTinh(),nv.getNgaySinh()
+                                    , nv.getCMND_CCCD(), nv.getUsername());
             stmt.executeUpdate(query);
-            JOptionPane.showMessageDialog(null, "Cập nhật thông tin thành công");
             return true;
-        }catch (Exception ex) {
+        }catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
             return false;
         }
@@ -152,7 +160,6 @@ public class NhanVienCRUD {
     }
     public List<NhanVien> getAllNhanVien() {
         List<NhanVien> nhanVienList = new ArrayList<>();
-
         String query = "SELECT * FROM nhanvien";
         ResultSet rs = Query(query);
 
@@ -175,11 +182,11 @@ public class NhanVienCRUD {
     return nhanVienList;
 }
 
-    public void deleteUser(int idUser) {
+    public void deleteUser(String nhanVienID) {
         String query = "DELETE FROM nhanvien WHERE MaNV = ?";
 
         try (PreparedStatement statement = con.prepareStatement(query)) {
-            statement.setInt(1, idUser);
+            statement.setString(1, nhanVienID);
             statement.executeUpdate();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
