@@ -256,6 +256,9 @@
       </Properties>
     </Component>
     <Component class="com.toedter.calendar.JDateChooser" name="dtpNgaySinh">
+      <Properties>
+        <Property name="dateFormatString" type="java.lang.String" value="dd/MM/yyyy"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel6">
       <Properties>
@@ -292,6 +295,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Hi&#x1ec7;n m&#x1ead;t kh&#x1ea9;u"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbPasswordShowHideActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnSua">
       <Properties>
@@ -311,9 +317,6 @@
     </Component>
     <Component class="javax.swing.JButton" name="btnHuy">
       <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="2" name="C:\Users\Administrator\Downloads\transparent-arrow-icon-return-icon-5f8796d7ba8fc3.7847272616027214957642.jpg"/>
-        </Property>
         <Property name="text" type="java.lang.String" value="Hu&#x1ef7;"/>
       </Properties>
       <Events>

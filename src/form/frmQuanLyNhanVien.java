@@ -49,7 +49,7 @@ public class frmQuanLyNhanVien extends javax.swing.JFrame {
         tbNhanVien.setRowSelectionAllowed(false);
         clickLastColumnCell();
         tbNhanVien.setRowHeight(40);
-        Icon deleteIcon = new  ImageIcon("C:\\Users\\Administrator\\Desktop\\LTMang\\KTGiuaKy\\VanPhongPhamBaToCom\\src\\icons\\delete.png");
+        Icon deleteIcon = new  ImageIcon("C:\\HUTECH\\New\\Mang may tinh\\Giua ky\\VanPhongPhamBaToCom\\src\\icons\\delete.png");
         buttonColumn=new ButtonColumn(tbNhanVien, tbNhanVien.getColumnCount() - 1,deleteIcon);
     }
     private void createTableRowClick(){
@@ -232,6 +232,8 @@ public class frmQuanLyNhanVien extends javax.swing.JFrame {
 
         jLabel5.setText("Ngày sinh");
 
+        dtpNgaySinh.setDateFormatString("dd/MM/yyyy");
+
         jLabel6.setText("CMND_CCCD");
 
         txtTenNhanVien.addActionListener(new java.awt.event.ActionListener() {
@@ -247,6 +249,11 @@ public class frmQuanLyNhanVien extends javax.swing.JFrame {
         jLabel9.setText("Nhập lại mật khẩu");
 
         cbPasswordShowHide.setText("Hiện mật khẩu");
+        cbPasswordShowHide.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbPasswordShowHideActionPerformed(evt);
+            }
+        });
 
         btnSua.setText("Sửa nhân viên");
         btnSua.addActionListener(new java.awt.event.ActionListener() {
@@ -262,7 +269,6 @@ public class frmQuanLyNhanVien extends javax.swing.JFrame {
             }
         });
 
-        btnHuy.setIcon(new javax.swing.ImageIcon("C:\\Users\\Administrator\\Downloads\\transparent-arrow-icon-return-icon-5f8796d7ba8fc3.7847272616027214957642.jpg")); // NOI18N
         btnHuy.setText("Huỷ");
         btnHuy.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -482,6 +488,19 @@ public class frmQuanLyNhanVien extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, ex,"LOI",1);
         }
     }//GEN-LAST:event_btnSuaActionPerformed
+
+    private void cbPasswordShowHideActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbPasswordShowHideActionPerformed
+        // TODO add your handling code here:
+        if(cbPasswordShowHide.isSelected()){
+            txtPassword.setEchoChar((char) 0);
+            txtReenterPassword.setEchoChar((char) 0);
+        }
+        
+        else{                
+            txtPassword.setEchoChar('\u2022');       
+            txtReenterPassword.setEchoChar('\u2022');             
+        }                                              
+    }//GEN-LAST:event_cbPasswordShowHideActionPerformed
 
     /**
      * @param args the command line arguments

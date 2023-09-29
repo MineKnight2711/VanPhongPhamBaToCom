@@ -77,6 +77,76 @@ public class NhanVienCRUD {
         }
     }
     
+    public boolean themQuyenQuanLy(String maNV){
+        try{
+            String query = String.format("UPDATE nhanvien SET LaQuanLy = 1 WHERE MaNV = '%s'", maNV);
+            stmt.executeUpdate(query);
+            return true;
+        }catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+            return false;
+        }        
+    }
+    
+     public boolean xoaQuyenQuanLy(String maNV){
+        try{
+            String query = String.format("UPDATE nhanvien SET LaQuanLy = 0 WHERE MaNV = '%s'", maNV);
+            stmt.executeUpdate(query);
+            return true;
+        }catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+            return false;
+        }        
+    }
+    
+    public List<NhanVien> getNhanVienQuanLy(){
+        String query = "SELECT * FROM nhanvien WHERE LaQuanLy = 1";
+        List<NhanVien> nhanVienList = new ArrayList<>();
+        ResultSet rs = Query(query);
+        try {
+            while (rs.next()) {
+                NhanVien nhanVien = new NhanVien();
+                nhanVien.setMaNV(rs.getString("MaNV"));
+                nhanVien.setTenNV(rs.getString("TenNV"));
+                nhanVien.setDiaChi(rs.getString("DiaChi"));
+                nhanVien.setSdt(rs.getString("Sdt"));
+                nhanVien.setGioiTinh(rs.getString("GioiTinh"));
+                nhanVien.setNgaySinh(rs.getDate("NgaySinh"));
+                nhanVien.setCMND_CCCD(rs.getString("CMND_CCCD"));
+                nhanVien.setUsername(rs.getString("username"));
+                nhanVienList.add(nhanVien);
+            }
+            return nhanVienList;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+    
+    public List<NhanVien> getNhanVienBanHang(){
+        String query = "SELECT * FROM nhanvien WHERE LaQuanLy = 0";
+        List<NhanVien> nhanVienList = new ArrayList<>();
+        ResultSet rs = Query(query);
+        try {
+            while (rs.next()) {
+                NhanVien nhanVien = new NhanVien();
+                nhanVien.setMaNV(rs.getString("MaNV"));
+                nhanVien.setTenNV(rs.getString("TenNV"));
+                nhanVien.setDiaChi(rs.getString("DiaChi"));
+                nhanVien.setSdt(rs.getString("Sdt"));
+                nhanVien.setGioiTinh(rs.getString("GioiTinh"));
+                nhanVien.setNgaySinh(rs.getDate("NgaySinh"));
+                nhanVien.setCMND_CCCD(rs.getString("CMND_CCCD"));
+                nhanVien.setUsername(rs.getString("username"));
+                nhanVienList.add(nhanVien);
+            }
+            return nhanVienList;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+    
     public boolean ChangePassword(String queryCheck, String query, String oldPass){
         try{
                 String pass;
