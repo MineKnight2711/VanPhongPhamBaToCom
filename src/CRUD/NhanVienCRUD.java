@@ -43,7 +43,7 @@ public class NhanVienCRUD {
                 if (resultSet.next()) {
                     String hashedPassword = resultSet.getString("password");
                     BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), hashedPassword);
-                    if (result.verified) {
+                    if(result.verified) {
                         return true;
                     } else {
                         return false;

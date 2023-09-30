@@ -171,6 +171,7 @@ public class frmLogin extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Đăng nhập thành công!");
             frmQuanLyNhanVien qlnv=new frmQuanLyNhanVien();
             qlnv.setVisible(true);
+            this.dispose();
         } else {
             JOptionPane.showMessageDialog(this, "Đăng nhập thất bại!","Lỗi",JOptionPane.ERROR_MESSAGE);
         }

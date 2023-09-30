@@ -44,8 +44,8 @@ public class frmPhanQuyen extends javax.swing.JFrame {
         xoaQuyenQuanLy();
         tbNhanVienBanHang.setRowHeight(40);
         tbNhanVienQuanLy.setRowHeight(40);
-        Icon upIcon = new  ImageIcon("C:\\HUTECH\\New\\Mang may tinh\\Giua ky\\VanPhongPhamBaToCom\\src\\icons\\up.png");
-        Icon downIcon = new  ImageIcon("C:\\HUTECH\\New\\Mang may tinh\\Giua ky\\VanPhongPhamBaToCom\\src\\icons\\down.png");
+        Icon upIcon = new  ImageIcon("src\\icons\\up.png");
+        Icon downIcon = new  ImageIcon("src\\icons\\down.png");
         buttonThemQuyen = new ButtonColumn(tbNhanVienBanHang, tbNhanVienBanHang.getColumnCount() - 1,upIcon);
         buttonXoaQuyen = new ButtonColumn(tbNhanVienQuanLy, tbNhanVienQuanLy.getColumnCount() - 1,downIcon);
         
