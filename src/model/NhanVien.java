@@ -30,6 +30,7 @@ public class NhanVien {
     private String password;
     
     private boolean VoHieuHoa;
+    
     private boolean LaQuanLy;
     
     
