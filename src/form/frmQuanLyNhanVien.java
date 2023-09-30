@@ -64,7 +64,7 @@ public class frmQuanLyNhanVien extends javax.swing.JFrame {
         tbNhanVien.setRowSelectionAllowed(false);
         clickLastColumnCell();
         tbNhanVien.setRowHeight(40);
-        Icon deleteIcon = new  ImageIcon("C:\\HUTECH\\New\\Mang may tinh\\Giua ky\\VanPhongPhamBaToCom\\src\\icons\\delete.png");
+        Icon deleteIcon = new  ImageIcon("src\\icons\\delete.png");
         buttonColumn=new ButtonColumn(tbNhanVien, tbNhanVien.getColumnCount() - 1,deleteIcon);
     }
     
@@ -154,7 +154,7 @@ public class frmQuanLyNhanVien extends javax.swing.JFrame {
                 }
             }
         });
-     }
+    }
     private void refresh(){
         txtMaNV.setText("");
         txtTenDangNhap.setText("");
@@ -222,7 +222,6 @@ public class frmQuanLyNhanVien extends javax.swing.JFrame {
     }
             
     private void loadTable() {
-
         DefaultTableModel model = (DefaultTableModel) tbNhanVien.getModel();
         model.setRowCount(0); 
         for (NhanVien nhanVien : nhanViens) {
