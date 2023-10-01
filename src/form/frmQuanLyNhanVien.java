@@ -149,7 +149,7 @@ public class frmQuanLyNhanVien extends javax.swing.JFrame {
                 }
             }
         });
-     }
+    }
     private void refresh(){
         txtMaNV.setText("");
         txtTenDangNhap.setText("");
@@ -217,7 +217,6 @@ public class frmQuanLyNhanVien extends javax.swing.JFrame {
     }
             
     private void loadTable() {
-
         DefaultTableModel model = (DefaultTableModel) tbNhanVien.getModel();
         model.setRowCount(0); 
         for (NhanVien nhanVien : nhanViens) {
