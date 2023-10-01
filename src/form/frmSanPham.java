@@ -122,6 +122,7 @@ public class frmSanPham extends javax.swing.JFrame {
                     spnPrice.setValue(selectedMatHang.getGiaBan());
                     cmbLoai.setSelectedItem(selectedMatHang.getMaLoaiMH());
                     txtMoTa.setText(selectedMatHang.getMota());
+                    cbmDvt.setSelectedItem(selectedMatHang.getDvt());
                 }
             }
         });
@@ -134,13 +135,14 @@ public class frmSanPham extends javax.swing.JFrame {
         int number = 1;
         for (MatHang matHang : list) {
             int stt = number;
+            Boolean voHieuHoa = matHang.isVoHieuHoa();
             String maMH = matHang.getMaMH();
             String maLoai = loaiMatHangCRUD.getByMaLoaiMH(matHang.getMaLoaiMH());
             String tenMH = matHang.getTenMH();
             double giaBan = matHang.getGiaBan();
             String dvt = matHang.getDvt();
             String moTa = matHang.getMota();
-            model.addRow(new Object[]{stt,"", maLoai,maMH, tenMH, giaBan, dvt , moTa});
+            model.addRow(new Object[]{stt,voHieuHoa, maLoai,maMH, tenMH, giaBan, dvt , moTa});
             number ++;
         }
     }
@@ -188,8 +190,18 @@ public class frmSanPham extends javax.swing.JFrame {
         });
 
         btnEdit.setText("Sửa");
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
 
         btnDelete.setText("Xóa");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         btnSave.setText("Lưu");
 
@@ -393,6 +405,25 @@ public class frmSanPham extends javax.swing.JFrame {
         txtTenMH.setText("");
         txtMoTa.setText("");
     }//GEN-LAST:event_btnCancelActionPerformed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        // TODO add your handling code here:
+        MatHang matHang = matHangCRUD.findByMaMH(txtMaMH.getText());
+        matHang.setTenMH(txtTenMH.getText().toString());
+        matHang.setGiaBan(Double.parseDouble(spnPrice.getValue().toString()));
+        matHang.setDvt(cbmDvt.getSelectedItem().toString());
+        matHang.setMaLoaiMH(loaiMatHangCRUD.getByTenLoaiMH(cmbLoai.getSelectedItem().toString()));
+        matHang.setMota(txtMoTa.getText().toString());
+        matHangCRUD.updateMatHang(matHang);
+        loadTable(listMatHang);
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+        MatHang matHang = matHangCRUD.findByMaMH(txtMaMH.getText());
+        matHangCRUD.voHieuHoaMatHang(matHang);
+        loadTable(listMatHang);
+    }//GEN-LAST:event_btnDeleteActionPerformed
 
     /**
      * @param args the command line arguments

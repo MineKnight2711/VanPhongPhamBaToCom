@@ -64,13 +64,60 @@ public class MatHangCRUD {
         }
     }
     public boolean addData(MatHang matHang) throws SQLException {
-        
         try{
             String query = String.format("INSERT INTO mathang VALUES ('%s', '%s', '%f', '%s', '%s', '%s', '%s')",
                                     matHang.getMaMH(), matHang.getTenMH(), matHang.getGiaBan(), matHang.getDvt(), 
                                     matHang.getMaLoaiMH(),matHang.getMota(), 0);
             stmt.executeUpdate(query);
             JOptionPane.showMessageDialog(null, "Thêm mặt hàng mới thành công");
+            return true;    
+        }catch(SQLException ex){
+            JOptionPane.showMessageDialog(null,ex);
+            System.out.println(ex.toString());
+            return false;
+        }
+    }
+    public MatHang findByMaMH(String maMH) {
+        String query = "SELECT * FROM mathang WHERE MaMH = '" + maMH + "'";
+        ResultSet rs = Query(query);
+        MatHang matHang = new MatHang();
+        try {
+            while (rs.next()) {
+                matHang.setMaMH(rs.getString("MaMH"));
+                matHang.setTenMH(rs.getString("TenMH"));
+                matHang.setGiaBan(rs.getDouble("GiaBan"));
+                matHang.setDvt(rs.getString("Dvt"));
+                matHang.setMaLoaiMH(rs.getString("MaLoaiHang"));
+                matHang.setMota(rs.getString("Mota"));
+                matHang.setVoHieuHoa(rs.getBoolean("VoHieuHoa"));
+            }
+            return matHang;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+    public boolean updateMatHang(MatHang matHang) {
+        try{
+            String query = String.format(
+          "UPDATE mathang SET TenMH = '%s', GiaBan = '%f', Dvt = '%s', MaLoaiHang = '%s', MoTa = '%s', VoHieuHoa = '%s' WHERE MaMH = '" + matHang.getMaMH() + "'",
+            matHang.getTenMH(), matHang.getGiaBan(), matHang.getDvt(), 
+            matHang.getMaLoaiMH(),matHang.getMota(), 0);
+            stmt.executeUpdate(query);
+            JOptionPane.showMessageDialog(null, "Cập nhật mặt hàng mới thành công");
+            return true;    
+        }catch(SQLException ex){
+            JOptionPane.showMessageDialog(null,ex);
+            System.out.println(ex.toString());
+            return false;
+        }
+    }
+    public boolean voHieuHoaMatHang(MatHang matHang) {
+        try{
+            String query = String.format(
+                "UPDATE mathang SET VoHieuHoa = 1 WHERE MaMH = '" + matHang.getMaMH() + "'");
+            stmt.executeUpdate(query);
+            JOptionPane.showMessageDialog(null, "Cập nhật mặt hàng mới thành công");
             return true;    
         }catch(SQLException ex){
             JOptionPane.showMessageDialog(null,ex);
