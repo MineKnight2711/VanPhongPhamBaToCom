@@ -18,13 +18,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-
-
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+ 
 import javax.swing.table.DefaultTableModel;
 import ktgiuaky_qlvpp.CheckInput;
 import ktgiuaky_qlvpp.KeyPressCheck;
+import model.NhanVienSession;
 
 /**
  *
@@ -38,12 +36,13 @@ public class frmQuanLyNhanVien extends javax.swing.JFrame {
     private DocumentListener textChangeListener;
     private CheckInput checkInput;
     private KeyPressCheck keyPressCheck;
-    
-    public frmQuanLyNhanVien() {
+    private static NhanVienSession currentNhanVien;
+    public frmQuanLyNhanVien(NhanVienSession loginNhanVien) {
         initComponents();          
         nhanVienCRUD=new NhanVienCRUD();
         checkInput = new CheckInput();
         keyPressCheck = new KeyPressCheck();
+        frmQuanLyNhanVien.currentNhanVien=loginNhanVien;
         mergeRadioButton();
         renderTableNhanVien();
         TextChangeEvent();
@@ -186,12 +185,16 @@ public class frmQuanLyNhanVien extends javax.swing.JFrame {
 
                     if (result == JOptionPane.YES_OPTION)
                     {
-                            if(nhanVienCRUD.deleteUser(idNhanVien.toString())){
-                                JOptionPane.showMessageDialog(null, "Xoá nhân viên thành công");
-                                 refresh();
-                            }
-                            
-                           
+                        if(idNhanVien.equals(currentNhanVien.getLoggedInNhanVien().getMaNV())){
+                            JOptionPane.showMessageDialog(null, "Bạn không thể xoá tài khoản đang đăng nhập","Cảnh báo",JOptionPane.ERROR_MESSAGE);
+                            refresh();
+                            return ;
+                        }
+                        if(nhanVienCRUD.deleteUser(idNhanVien.toString())){
+                            JOptionPane.showMessageDialog(null, "Xoá nhân viên thành công");
+                             refresh();
+                        }
+
                     }
                 
                 }
@@ -274,6 +277,7 @@ public class frmQuanLyNhanVien extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         btnMenuPhanQuyen = new javax.swing.JMenuItem();
         btnMenuQuanLyMatHang = new javax.swing.JMenuItem();
+        btnLoaiMatHang = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -381,7 +385,20 @@ public class frmQuanLyNhanVien extends javax.swing.JFrame {
         jMenu1.add(btnMenuPhanQuyen);
 
         btnMenuQuanLyMatHang.setText("Quản lý mặt hàng");
+        btnMenuQuanLyMatHang.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMenuQuanLyMatHangActionPerformed(evt);
+            }
+        });
         jMenu1.add(btnMenuQuanLyMatHang);
+
+        btnLoaiMatHang.setText("Quản lý loại mặt hàng");
+        btnLoaiMatHang.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoaiMatHangActionPerformed(evt);
+            }
+        });
+        jMenu1.add(btnLoaiMatHang);
 
         jMenuBar1.add(jMenu1);
 
@@ -484,7 +501,6 @@ public class frmQuanLyNhanVien extends javax.swing.JFrame {
                             .addComponent(rbNu)
                             .addComponent(rbKhac))
                         .addGap(32, 32, 32)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(txtCMND)
                     .addComponent(txtTenDangNhap, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE))
@@ -501,9 +517,8 @@ public class frmQuanLyNhanVien extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnThem, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(btnHuy, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
-                        .addComponent(btnSua, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(btnHuy, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
+                    .addComponent(btnSua, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -619,11 +634,23 @@ public class frmQuanLyNhanVien extends javax.swing.JFrame {
 
     private void btnMenuPhanQuyenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuPhanQuyenActionPerformed
         // TODO add your handling code here:
-        frmPhanQuyen open = new frmPhanQuyen();
+        frmPhanQuyen open = new frmPhanQuyen(currentNhanVien);
         open.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnMenuPhanQuyenActionPerformed
 
+    private void btnMenuQuanLyMatHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuQuanLyMatHangActionPerformed
+        frmSanPham openSP = new frmSanPham(currentNhanVien);
+        openSP.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnMenuQuanLyMatHangActionPerformed
+
+    private void btnLoaiMatHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoaiMatHangActionPerformed
+        frmLoaiMatHang openLSP = new frmLoaiMatHang();
+        openLSP.setVisible(true);
+        
+    }//GEN-LAST:event_btnLoaiMatHangActionPerformed
+    
     /**
      * @param args the command line arguments
      */
@@ -654,7 +681,7 @@ public class frmQuanLyNhanVien extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new frmQuanLyNhanVien().setVisible(true);
+                new frmQuanLyNhanVien(currentNhanVien).setVisible(true);
             }
         });
     }
@@ -662,6 +689,7 @@ public class frmQuanLyNhanVien extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup btgGender;
     private javax.swing.JButton btnHuy;
+    private javax.swing.JMenuItem btnLoaiMatHang;
     private javax.swing.JMenuItem btnMenuPhanQuyen;
     private javax.swing.JMenuItem btnMenuQuanLyMatHang;
     private javax.swing.JButton btnSua;

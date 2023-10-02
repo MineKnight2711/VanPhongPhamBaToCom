@@ -7,6 +7,8 @@ package form;
 import CRUD.NhanVienCRUD;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Date;
 import java.util.List;
 import javax.swing.Icon;
@@ -14,6 +16,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.NhanVien;
+import model.NhanVienSession;
 
 /**
  *
@@ -22,14 +25,16 @@ import model.NhanVien;
 public class frmPhanQuyen extends javax.swing.JFrame {
     private NhanVienCRUD nhanVienCRUD;
     private List<NhanVien> nhanVienQuanly;
-    private List<NhanVien> nhanVienBanHang
-            ;
+    private List<NhanVien> nhanVienBanHang;
+    private static NhanVienSession currentNhanVien;
     /**
      * Creates new form frmPhanQuyen
+     * @param loginNhanVien
      */
-    public frmPhanQuyen() {
+    public frmPhanQuyen(NhanVienSession loginNhanVien) {
         initComponents();
         nhanVienCRUD = new NhanVienCRUD();
+        frmPhanQuyen.currentNhanVien=loginNhanVien;
         LoadNhanVienBanHang();
         LoadNhanVienQuanLy();
         renderTable();
@@ -68,7 +73,7 @@ public class frmPhanQuyen extends javax.swing.JFrame {
         tbNhanVienQuanLy = new javax.swing.JTable();
         btnTroVe = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Nhân viên bán hàng");
@@ -174,7 +179,7 @@ public class frmPhanQuyen extends javax.swing.JFrame {
 
     private void btnTroVeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTroVeActionPerformed
         // TODO add your handling code here:
-        frmQuanLyNhanVien open = new frmQuanLyNhanVien();
+        frmQuanLyNhanVien open = new frmQuanLyNhanVien(currentNhanVien);
         open.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnTroVeActionPerformed
@@ -222,6 +227,7 @@ public class frmPhanQuyen extends javax.swing.JFrame {
                     
                     int selectedRow = tbNhanVienBanHang.convertRowIndexToModel(row);
                     Object idNhanVien = tbNhanVienBanHang.getModel().getValueAt(selectedRow, 0);
+                    
                     int result = JOptionPane.showConfirmDialog(
                             null,
                             "Bạn có chắc muốn thêm quyền quản lý nhân viên này? ",
@@ -230,15 +236,18 @@ public class frmPhanQuyen extends javax.swing.JFrame {
 
                     if (result == JOptionPane.YES_OPTION)
                     {
-                            if(nhanVienCRUD.themQuyenQuanLy(idNhanVien.toString())){
-                                JOptionPane.showMessageDialog(null, "Thêm quyền quản lý thành công");
+                        frmXacThuc xacthuc=new frmXacThuc(currentNhanVien,idNhanVien.toString());
+                        xacthuc.addWindowListener(new WindowAdapter() {
+                            @Override
+                            public void windowClosed(WindowEvent e) {
+                                // This code will execute when frmXacThuc is disposed
                                 LoadNhanVienBanHang();
                                 LoadNhanVienQuanLy();
                             }
-                            
+                        });
+                        xacthuc.setVisible(true);
+                        
                     }
-                     else
-                        return;
                 }
 
             }
@@ -256,6 +265,11 @@ public class frmPhanQuyen extends javax.swing.JFrame {
                     
                     int selectedRow = tbNhanVienQuanLy.convertRowIndexToModel(row);
                     Object idNhanVien = tbNhanVienQuanLy.getModel().getValueAt(selectedRow, 0);
+                    if(idNhanVien.equals(currentNhanVien.getLoggedInNhanVien().getMaNV()))
+                    {
+                        JOptionPane.showMessageDialog(null, "Bạn không thể phân quyền cho chính mình!","Cảnh báo",JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
                     int result = JOptionPane.showConfirmDialog(
                             null,
                             "Bạn có chắc muốn xoá quyền quản lý của nhân viên này? ",
@@ -264,11 +278,16 @@ public class frmPhanQuyen extends javax.swing.JFrame {
 
                     if (result == JOptionPane.YES_OPTION)
                     {
-                            if(nhanVienCRUD.xoaQuyenQuanLy(idNhanVien.toString())){
-                                JOptionPane.showMessageDialog(null, "Xoá quyền quản lý thành công");
+                        frmXacThuc xacthuc=new frmXacThuc(currentNhanVien,idNhanVien.toString());
+                        xacthuc.addWindowListener(new WindowAdapter() {
+                            @Override
+                            public void windowClosed(WindowEvent e) {
+                                // This code will execute when frmXacThuc is disposed
                                 LoadNhanVienBanHang();
                                 LoadNhanVienQuanLy();
                             }
+                        });
+                        xacthuc.setVisible(true);
                             
                     }
                     else
@@ -310,7 +329,7 @@ public class frmPhanQuyen extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new frmPhanQuyen().setVisible(true);
+                new frmPhanQuyen(currentNhanVien).setVisible(true);
             }
         });
     }

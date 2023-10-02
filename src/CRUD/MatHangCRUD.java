@@ -117,7 +117,7 @@ public class MatHangCRUD {
             String query = String.format(
                 "UPDATE mathang SET VoHieuHoa = 1 WHERE MaMH = '" + matHang.getMaMH() + "'");
             stmt.executeUpdate(query);
-            JOptionPane.showMessageDialog(null, "Cập nhật mặt hàng mới thành công");
+            JOptionPane.showMessageDialog(null, "Vô hiệu hoá mặt hàng thành công");
             return true;    
         }catch(SQLException ex){
             JOptionPane.showMessageDialog(null,ex);

@@ -10,6 +10,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
+import model.NhanVienSession;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -36,7 +37,7 @@ public class NhanVienCRUD {
     }
     
     public boolean login(String username, String password) {
-    String query = "SELECT Password FROM nhanvien WHERE username = ?";
+        String query = "SELECT Password FROM nhanvien WHERE username = ?";
         try (PreparedStatement statement = con.prepareStatement(query)) {
             statement.setString(1, username);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -77,27 +78,22 @@ public class NhanVienCRUD {
         }
     }
     
-    public boolean themQuyenQuanLy(String maNV){
+    public boolean phanQuyen(String maNV, boolean isQuanLy){
         try{
-            String query = String.format("UPDATE nhanvien SET LaQuanLy = 1 WHERE MaNV = '%s'", maNV);
-            stmt.executeUpdate(query);
+            String query = "UPDATE nhanvien SET LaQuanLy = ? WHERE MaNV = ?";
+           
+            PreparedStatement statement = con.prepareStatement(query);
+            
+            statement.setBoolean(1, isQuanLy);
+            statement.setString(2, maNV);
+            statement.executeUpdate();
             return true;
-        }catch (SQLException ex) {
+        } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
             return false;
-        }        
+        }
     }
     
-     public boolean xoaQuyenQuanLy(String maNV){
-        try{
-            String query = String.format("UPDATE nhanvien SET LaQuanLy = 0 WHERE MaNV = '%s'", maNV);
-            stmt.executeUpdate(query);
-            return true;
-        }catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex);
-            return false;
-        }        
-    }
     
     public List<NhanVien> getNhanVienQuanLy(){
         String query = "SELECT * FROM nhanvien WHERE LaQuanLy = 1";
@@ -168,6 +164,32 @@ public class NhanVienCRUD {
                 JOptionPane.showMessageDialog(null, ex);
                 return false;
         }        
+    }
+    public NhanVien getNhanVienByID(String id) {
+        String query = "SELECT * FROM nhanvien WHERE MaNV = ?";
+        try (PreparedStatement statement = con.prepareStatement(query)) {
+            statement.setString(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    NhanVien nv = new NhanVien();
+                    nv.setMaNV(resultSet.getString("MaNV"));
+                    nv.setTenNV(resultSet.getString("TenNV"));
+                    nv.setDiaChi(resultSet.getString("DiaChi"));
+                    nv.setSdt(resultSet.getString("Sdt"));
+                    nv.setGioiTinh(resultSet.getString("GioiTinh"));
+                    nv.setNgaySinh(resultSet.getDate("NgaySinh"));
+                    nv.setCMND_CCCD(resultSet.getString("CMND_CCCD"));
+                    nv.setUsername(resultSet.getString("username"));
+                    nv.setPassword(resultSet.getString("password"));
+                    nv.setVoHieuHoa(resultSet.getBoolean("VoHieuHoa"));
+                    nv.setLaQuanLy(resultSet.getBoolean("LaQuanLy"));
+                    return nv;
+                }
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+        return null; // Return null if the user doesn't exist or an error occurs
     }
     
     public NhanVien getUser(String username) {

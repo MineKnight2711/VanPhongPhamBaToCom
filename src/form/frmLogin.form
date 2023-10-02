@@ -27,7 +27,7 @@
               <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
               <Component id="btnLogin" min="-2" pref="131" max="-2" attributes="0"/>
               <EmptySpace pref="201" max="32767" attributes="0"/>
-              <Component id="Thoát" min="-2" pref="131" max="-2" attributes="0"/>
+              <Component id="btnThoat" min="-2" pref="131" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
           </Group>
           <Group type="102" attributes="0">
@@ -82,7 +82,7 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnLogin" alignment="3" min="-2" pref="55" max="-2" attributes="0"/>
-                  <Component id="Thoát" alignment="3" min="-2" pref="55" max="-2" attributes="0"/>
+                  <Component id="btnThoat" alignment="3" min="-2" pref="55" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="50" max="32767" attributes="0"/>
           </Group>
@@ -122,6 +122,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtUserName">
+      <Events>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtUserNameKeyPressed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnLogin">
       <Properties>
@@ -131,12 +134,18 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLoginActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="Tho&#xe1;t">
+    <Component class="javax.swing.JButton" name="btnThoat">
       <Properties>
         <Property name="text" type="java.lang.String" value="Tho&#xe1;t"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnThoatActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JPasswordField" name="txtPassword">
+      <Events>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtPasswordKeyPressed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JCheckBox" name="cbPasswordShowHide">
       <Properties>

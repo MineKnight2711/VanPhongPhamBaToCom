@@ -29,15 +29,7 @@ public class ButtonColumn extends AbstractCellEditor
 	private Object editorValue;
 	private boolean isButtonColumnEditor;
         private Icon buttonIcon; 
-	/**
-	 *  Create the ButtonColumn to be used as a renderer and editor. The
-	 *  renderer and editor will automatically be installed on the TableColumn
-	 *  of the specified column.
-	 *
-	 *  @param table the table containing the button renderer/editor
-	 *  @param action the Action to be invoked when the button is invoked
-	 *  @param column the column to which the button renderer/editor is added
-	 */
+
 	public ButtonColumn(JTable table, int column,Icon buttonIcon)
 	{
 		this.table = table;

@@ -5,6 +5,7 @@
 package CRUD;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import model.LoaiMatHang;
-import model.NhanVien;
+
 
 /**
  *
@@ -42,7 +43,18 @@ public class LoaiMatHangCRUD {
             return null ;
         }
     }
-    
+    public boolean addLoaiMatHang(LoaiMatHang lmh){
+        String sql = String.format("INSERT INTO loaimathang VALUES ('%s', '%s','%s')",lmh.getMaLoaiHang(),lmh.getTenLoai(),0);
+        try{
+            stmt.executeUpdate(sql);
+            
+            return true;
+        }catch(SQLException ex){
+            JOptionPane.showMessageDialog(null,ex);
+            System.out.println(ex.toString());
+            return false;
+        }
+    }
     public List<LoaiMatHang> getAll() {
         List<LoaiMatHang> list = new ArrayList<>();
         String query = "SELECT * FROM loaimathang";
@@ -88,5 +100,17 @@ public class LoaiMatHangCRUD {
             return null;
         }
         return maLoaiMH;
+    }
+    public boolean xoaLoaiMatHang(String nhanVienID) {
+        String query = "DELETE FROM loaimathang WHERE MaLoaiHang = ?";
+
+        try (PreparedStatement statement = con.prepareStatement(query)) {
+            statement.setString(1, nhanVienID);
+            statement.executeUpdate();
+            return true;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+            return false;
+        }
     }
 }

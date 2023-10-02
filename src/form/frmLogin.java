@@ -5,9 +5,12 @@
 package form;
 
 import CRUD.NhanVienCRUD;
+import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import model.NhanVien;
+import model.NhanVienSession;
 
 /**
  *
@@ -40,7 +43,7 @@ public class frmLogin extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         txtUserName = new javax.swing.JTextField();
         btnLogin = new javax.swing.JButton();
-        Thoát = new javax.swing.JButton();
+        btnThoat = new javax.swing.JButton();
         txtPassword = new javax.swing.JPasswordField();
         cbPasswordShowHide = new javax.swing.JCheckBox();
 
@@ -55,6 +58,12 @@ public class frmLogin extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel3.setText("Tên đăng nhập");
 
+        txtUserName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtUserNameKeyPressed(evt);
+            }
+        });
+
         btnLogin.setText("Đăng nhập");
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -62,7 +71,18 @@ public class frmLogin extends javax.swing.JFrame {
             }
         });
 
-        Thoát.setText("Thoát");
+        btnThoat.setText("Thoát");
+        btnThoat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThoatActionPerformed(evt);
+            }
+        });
+
+        txtPassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtPasswordKeyPressed(evt);
+            }
+        });
 
         cbPasswordShowHide.setText("Hiện mật khẩu");
         cbPasswordShowHide.addActionListener(new java.awt.event.ActionListener() {
@@ -79,7 +99,7 @@ public class frmLogin extends javax.swing.JFrame {
                 .addGap(60, 60, 60)
                 .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 201, Short.MAX_VALUE)
-                .addComponent(Thoát, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnThoat, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(60, 60, 60))
             .addGroup(layout.createSequentialGroup()
                 .addGap(227, 227, 227)
@@ -122,7 +142,7 @@ public class frmLogin extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Thoát, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnThoat, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(50, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -166,12 +186,22 @@ public class frmLogin extends javax.swing.JFrame {
     
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         String password = new String(txtPassword.getPassword());
-        
         if (nhanVienCRUD.login(txtUserName.getText(), password)) {
             JOptionPane.showMessageDialog(this, "Đăng nhập thành công!");
-            frmQuanLyNhanVien qlnv=new frmQuanLyNhanVien();
-            qlnv.setVisible(true);
-            this.dispose();
+            NhanVien loginNhanVien=nhanVienCRUD.getUser(txtUserName.getText());
+            NhanVienSession newNhanVienSession=new NhanVienSession();
+            newNhanVienSession.setIsLoggedIn(true);
+            newNhanVienSession.setLoggedInNhanVien(loginNhanVien);
+            if(loginNhanVien.isLaQuanLy()){
+                frmQuanLyNhanVien qlnv=new frmQuanLyNhanVien(newNhanVienSession);
+                qlnv.setVisible(true);
+                this.dispose();
+            }
+            else{
+                frmSanPham qlmh=new frmSanPham(newNhanVienSession);
+                qlmh.setVisible(true);
+                this.dispose();
+            }
         } else {
             JOptionPane.showMessageDialog(this, "Đăng nhập thất bại!","Lỗi",JOptionPane.ERROR_MESSAGE);
         }
@@ -187,6 +217,22 @@ public class frmLogin extends javax.swing.JFrame {
             txtPassword.setEchoChar('\u2022');
         }
     }//GEN-LAST:event_cbPasswordShowHideActionPerformed
+
+    private void txtUserNameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUserNameKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            btnLogin.doClick();
+        }
+    }//GEN-LAST:event_txtUserNameKeyPressed
+
+    private void txtPasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            btnLogin.doClick();
+        }
+    }//GEN-LAST:event_txtPasswordKeyPressed
+
+    private void btnThoatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThoatActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_btnThoatActionPerformed
 
     /**
      * @param args the command line arguments
@@ -224,8 +270,8 @@ public class frmLogin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Thoát;
     private javax.swing.JButton btnLogin;
+    private javax.swing.JButton btnThoat;
     private javax.swing.JCheckBox cbPasswordShowHide;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
