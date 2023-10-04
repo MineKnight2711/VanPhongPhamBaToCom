@@ -104,7 +104,8 @@
         <Component class="javax.swing.JTable" name="tbLoaiMatHang">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="3" rowCount="4">
+              <Table columnCount="4" rowCount="4">
+                <Column editable="false" title="V&#xf4; hi&#x1ec7;u ho&#xe1;" type="java.lang.Boolean"/>
                 <Column editable="false" title="M&#xe3; lo&#x1ea1;i" type="java.lang.Object"/>
                 <Column editable="false" title="T&#xea;n lo&#x1ea1;i m&#x1eb7;t h&#xe0;ng" type="java.lang.Object"/>
                 <Column editable="false" title="Xo&#xe1;" type="java.lang.Object"/>

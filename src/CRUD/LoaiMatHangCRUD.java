@@ -5,7 +5,6 @@
 package CRUD;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -73,6 +72,24 @@ public class LoaiMatHangCRUD {
             return null;
         }
     }
+    public List<LoaiMatHang> getAllExceptVoHieuHoa() {
+        List<LoaiMatHang> list = new ArrayList<>();
+        String query = "SELECT * FROM loaimathang WHERE VoHieuHoa = false";
+        ResultSet rs = Query(query);
+        try {
+            while (rs.next()) {
+                LoaiMatHang loaiMatHang = new LoaiMatHang();
+                loaiMatHang.setMaLoaiHang(rs.getString("MaLoaiHang"));
+                loaiMatHang.setTenLoai(rs.getString("TenLoai"));
+                loaiMatHang.setVoHieuHoa(rs.getBoolean("VoHieuHoa"));
+                list.add(loaiMatHang);
+            }
+            return list;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
     public String getByMaLoaiMH(String maLoaiMH) {
         String tenLoaiMH = "";
         String query = "SELECT * FROM loaimathang WHERE MaLoaiHang = '" + maLoaiMH + "'";
@@ -101,15 +118,15 @@ public class LoaiMatHangCRUD {
         }
         return maLoaiMH;
     }
-    public boolean xoaLoaiMatHang(String nhanVienID) {
-        String query = "DELETE FROM loaimathang WHERE MaLoaiHang = ?";
-
-        try (PreparedStatement statement = con.prepareStatement(query)) {
-            statement.setString(1, nhanVienID);
-            statement.executeUpdate();
-            return true;
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex);
+    public boolean xoaLoaiMatHang(String loaiMatHangId) {
+        try {
+            String query =  String.format(
+                "UPDATE loaimathang SET VoHieuHoa = 1 WHERE MaLoaiHang = '" + loaiMatHangId + "'");
+            stmt.executeUpdate(query);
+            return true;    
+        }catch(SQLException ex){
+            JOptionPane.showMessageDialog(null,ex);
+            System.out.println(ex.toString());
             return false;
         }
     }

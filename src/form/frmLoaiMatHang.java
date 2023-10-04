@@ -17,6 +17,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import model.LoaiMatHang;
+import model.NhanVien;
+import model.NhanVienSession;
 
 
 /**
@@ -28,12 +30,14 @@ public class frmLoaiMatHang extends javax.swing.JFrame {
     private LoaiMatHangCRUD loaiMatHangCRUD;
     private ButtonColumn buttonColumn;
     private DocumentListener textChangeListener;
+    private static NhanVienSession currentNhanVien;
     /**
      * Creates new form frmLoaiMatHang
      */
-    public frmLoaiMatHang() {
+    public frmLoaiMatHang(NhanVienSession loginNhanVien) {
         initComponents();
         loaiMatHangCRUD=new LoaiMatHangCRUD();
+        frmLoaiMatHang.currentNhanVien=loginNhanVien;
         renderTableNhanVien();
         TextChangeEvent();
         btnThem.setEnabled(false);
@@ -70,18 +74,25 @@ public class frmLoaiMatHang extends javax.swing.JFrame {
 
         tbLoaiMatHang.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Mã loại", "Tên loại mặt hàng", "Xoá"
+                "Vô hiệu hoá", "Mã loại", "Tên loại mặt hàng", "Xoá"
             }
         ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false
+            Class[] types = new Class [] {
+                java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -210,6 +221,8 @@ public class frmLoaiMatHang extends javax.swing.JFrame {
     
     
     private void btnTroVeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnTroVeMouseClicked
+        frmSanPham sp=new frmSanPham(currentNhanVien);
+        sp.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnTroVeMouseClicked
 
@@ -251,7 +264,7 @@ public class frmLoaiMatHang extends javax.swing.JFrame {
                 if (column == tbLoaiMatHang.getColumnCount() - 1) {
                     
                     int selectedRow = tbLoaiMatHang.convertRowIndexToModel(row);
-                    Object idLMH = tbLoaiMatHang.getModel().getValueAt(selectedRow, 0);
+                    Object idLMH = tbLoaiMatHang.getModel().getValueAt(selectedRow, 1);
                     int result = JOptionPane.showConfirmDialog(
                             null,
                             "Bạn có chắc muốn xoá loại mặt hàng này? ",
@@ -261,8 +274,8 @@ public class frmLoaiMatHang extends javax.swing.JFrame {
                     if (result == JOptionPane.YES_OPTION)
                     {
                         if(loaiMatHangCRUD.xoaLoaiMatHang(idLMH.toString())){
-                            JOptionPane.showMessageDialog(null, "Xoá thành công");
-                             refresh();
+                            JOptionPane.showMessageDialog(null, "Vô hiệu hoá loại mặt hàng thành công");
+                            refresh();
                         }  
                     }
                 
@@ -275,9 +288,10 @@ public class frmLoaiMatHang extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) tbLoaiMatHang.getModel();
         model.setRowCount(0); 
         for (LoaiMatHang loai : loaiMatHangs) {
+            boolean vhh=loai.isVoHieuHoa();
             String maNV = loai.getMaLoaiHang();
             String tenNV = loai.getTenLoai();
-            model.addRow(new Object[]{maNV, tenNV});
+            model.addRow(new Object[]{vhh, maNV, tenNV});
         }
         createTableRowClick();
     }
@@ -327,7 +341,7 @@ public class frmLoaiMatHang extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new frmLoaiMatHang().setVisible(true);
+                new frmLoaiMatHang(currentNhanVien).setVisible(true);
             }
         });
     }

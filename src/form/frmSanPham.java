@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
@@ -57,7 +58,7 @@ public class frmSanPham extends javax.swing.JFrame {
         
     }
     private void loadComboBox(){
-        listLoaiMatHang = loaiMatHangCRUD.getAll();
+        listLoaiMatHang = loaiMatHangCRUD.getAllExceptVoHieuHoa();
         DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<>();
         for(LoaiMatHang loai : listLoaiMatHang){
             String maLoai = loai.getTenLoai();
@@ -132,8 +133,8 @@ public class frmSanPham extends javax.swing.JFrame {
             public void mouseClicked(MouseEvent e) {
 
                 int selectedRow = tblData.getSelectedRow();
-                if(selectedRow < 0 || selectedRow == 6)
-                    return;
+//                if(selectedRow < 0 || selectedRow == 6)
+//                    return;
                 if (selectedRow >= 0) {
                     MatHang selectedMatHang = listMatHang.get(selectedRow);
                     txtMaMH.setText(selectedMatHang.getMaMH());
@@ -152,7 +153,6 @@ public class frmSanPham extends javax.swing.JFrame {
     private void loadTable(List<MatHang> list) {
         tblData.setRowHeight(40);
         tblData.setRowSelectionAllowed(false);
-        list = matHangCRUD.getAll();       
         DefaultTableModel model = (DefaultTableModel) tblData.getModel();
         model.setRowCount(0); 
         int number = 1;
@@ -445,15 +445,17 @@ public class frmSanPham extends javax.swing.JFrame {
         matHang.setVoHieuHoa(cbVoHieuHoa.isSelected());
         try {
             matHangCRUD.addData(matHang);
+            refreshData();
+            JOptionPane.showMessageDialog(null, "Thêm mới mặt hàng thành công");
         } catch (SQLException ex) {
-            Logger.getLogger(frmSanPham.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Có lỗi xảy ra:"+ex.toString(),"Lỗi",JOptionPane.ERROR_MESSAGE);
         }
-        refreshData();
     }//GEN-LAST:event_btnAddActionPerformed
     private void refreshData(){
         txtMaMH.setText("");
         txtTenMH.setText("");
         txtMoTa.setText("");
+        txtGiaBan.setText("");
         btnAdd.setEnabled(false);
         btnEdit.setEnabled(false);
         btnDelete.setEnabled(false);
@@ -466,7 +468,6 @@ public class frmSanPham extends javax.swing.JFrame {
     }
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         refreshData();
-
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
@@ -484,7 +485,7 @@ public class frmSanPham extends javax.swing.JFrame {
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         MatHang matHang = matHangCRUD.findByMaMH(txtMaMH.getText());
         matHangCRUD.voHieuHoaMatHang(matHang);
-        loadTable(listMatHang);
+        refreshData();
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnActionPerformed
@@ -495,9 +496,9 @@ public class frmSanPham extends javax.swing.JFrame {
 
     private void btnCancel1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancel1ActionPerformed
         // TODO add your handling code here:
-        frmLoaiMatHang open = new frmLoaiMatHang();
+        frmLoaiMatHang open = new frmLoaiMatHang(currentNhanVien);
         open.setVisible(true);
-        
+        this.dispose();
     }//GEN-LAST:event_btnCancel1ActionPerformed
 
     /**
