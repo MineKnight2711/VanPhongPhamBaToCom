@@ -37,6 +37,7 @@ public class frmQuanLyNhanVien extends javax.swing.JFrame {
     private CheckInput checkInput;
     private KeyPressCheck keyPressCheck;
     private static NhanVienSession currentNhanVien;
+    
     public frmQuanLyNhanVien(NhanVienSession loginNhanVien) {
         initComponents();          
         nhanVienCRUD=new NhanVienCRUD();
@@ -277,7 +278,6 @@ public class frmQuanLyNhanVien extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         btnMenuPhanQuyen = new javax.swing.JMenuItem();
         btnMenuQuanLyMatHang = new javax.swing.JMenuItem();
-        btnLoaiMatHang = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -391,14 +391,6 @@ public class frmQuanLyNhanVien extends javax.swing.JFrame {
             }
         });
         jMenu1.add(btnMenuQuanLyMatHang);
-
-        btnLoaiMatHang.setText("Quản lý loại mặt hàng");
-        btnLoaiMatHang.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLoaiMatHangActionPerformed(evt);
-            }
-        });
-        jMenu1.add(btnLoaiMatHang);
 
         jMenuBar1.add(jMenu1);
 
@@ -644,12 +636,6 @@ public class frmQuanLyNhanVien extends javax.swing.JFrame {
         openSP.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnMenuQuanLyMatHangActionPerformed
-
-    private void btnLoaiMatHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoaiMatHangActionPerformed
-        frmLoaiMatHang openLSP = new frmLoaiMatHang();
-        openLSP.setVisible(true);
-        
-    }//GEN-LAST:event_btnLoaiMatHangActionPerformed
     
     /**
      * @param args the command line arguments
@@ -689,7 +675,6 @@ public class frmQuanLyNhanVien extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup btgGender;
     private javax.swing.JButton btnHuy;
-    private javax.swing.JMenuItem btnLoaiMatHang;
     private javax.swing.JMenuItem btnMenuPhanQuyen;
     private javax.swing.JMenuItem btnMenuQuanLyMatHang;
     private javax.swing.JButton btnSua;

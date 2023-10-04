@@ -13,6 +13,8 @@ import java.util.List;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import model.LoaiMatHang;
 
@@ -25,6 +27,7 @@ public class frmLoaiMatHang extends javax.swing.JFrame {
     private List<LoaiMatHang> loaiMatHangs;
     private LoaiMatHangCRUD loaiMatHangCRUD;
     private ButtonColumn buttonColumn;
+    private DocumentListener textChangeListener;
     /**
      * Creates new form frmLoaiMatHang
      */
@@ -32,6 +35,9 @@ public class frmLoaiMatHang extends javax.swing.JFrame {
         initComponents();
         loaiMatHangCRUD=new LoaiMatHangCRUD();
         renderTableNhanVien();
+        TextChangeEvent();
+        btnThem.setEnabled(false);
+        btnSua.setEnabled(false);
     }
     private void refresh(){
         txtMaLoai.setText("");
@@ -164,6 +170,44 @@ public class frmLoaiMatHang extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+    
+    private void TextChangeEvent(){
+        textChangeListener = new DocumentListener(){
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateTextFields();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateTextFields();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                updateTextFields();
+            }
+            private void updateTextFields(){
+                if(txtMaLoai.getText().isEmpty()){
+                    btnSua.setEnabled(false);
+                    if(txtTenLoai.getText().isEmpty())
+                        btnThem.setEnabled(false);
+                    else
+                        btnThem.setEnabled(true);
+                }
+                else{
+                    btnThem.setEnabled(false);
+                    if(txtTenLoai.getText().isEmpty())
+                        btnSua.setEnabled(false);
+                    else
+                        btnSua.setEnabled(true);
+                }                    
+            }
+        };
+        txtMaLoai.getDocument().addDocumentListener(textChangeListener);
+        txtTenLoai.getDocument().addDocumentListener(textChangeListener);
+    }
+    
     
     private void btnTroVeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnTroVeMouseClicked
         this.dispose();

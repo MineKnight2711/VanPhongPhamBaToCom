@@ -68,6 +68,8 @@
                   <EmptySpace min="-2" pref="84" max="-2" attributes="0"/>
                   <Component id="btnCancel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
+                  <Component id="btnCancel1" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
                   <Component id="btnReturn" min="-2" pref="106" max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -81,6 +83,7 @@
                       <Component id="btnDelete" alignment="1" max="32767" attributes="0"/>
                       <Component id="btnEdit" max="32767" attributes="0"/>
                       <Component id="btnCancel" alignment="1" max="32767" attributes="0"/>
+                      <Component id="btnCancel1" alignment="0" max="32767" attributes="0"/>
                       <Component id="btnReturn" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -129,6 +132,14 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnReturnActionPerformed"/>
           </Events>
         </Component>
+        <Component class="javax.swing.JButton" name="btnCancel1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Qu&#x1ea3;n l&#xfd; lo&#x1ea1;i m&#x1eb7;t h&#xe0;ng"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCancel1ActionPerformed"/>
+          </Events>
+        </Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
@@ -143,7 +154,7 @@
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
               <Table columnCount="8" rowCount="0">
                 <Column editable="false" title="STT" type="java.lang.Object"/>
-                <Column editable="false" title="Delete" type="java.lang.Boolean"/>
+                <Column editable="false" title="V&#xf4; hi&#x1ec7;u" type="java.lang.Boolean"/>
                 <Column editable="false" title="Nh&#xf3;m m&#x1eb7;t h&#xe0;ng" type="java.lang.Object"/>
                 <Column editable="false" title="M&#xe3; m&#x1eb7;t h&#xe0;ng" type="java.lang.Object"/>
                 <Column editable="false" title="M&#x1eb7;t h&#xe0;ng" type="java.lang.Object"/>
@@ -229,7 +240,6 @@
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                       <Component id="cmbLoai" pref="105" max="32767" attributes="0"/>
                                       <Component id="txtMaMH" max="32767" attributes="0"/>
-                                      <Component id="spnPrice" max="32767" attributes="0"/>
                                   </Group>
                                   <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="1" attributes="0">
@@ -242,11 +252,12 @@
                                       <Group type="102" alignment="0" attributes="0">
                                           <Component id="cbmDvt" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
-                                          <Component id="cbVoHieuHoa" min="-2" pref="87" max="-2" attributes="0"/>
+                                          <Component id="cbVoHieuHoa" min="-2" pref="122" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
                               <Component id="jScrollPane2" min="-2" pref="748" max="-2" attributes="0"/>
+                              <Component id="txtGiaBan" min="-2" pref="155" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -286,9 +297,9 @@
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="spnPrice" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtGiaBan" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -329,8 +340,6 @@
           <Properties>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
-        </Component>
-        <Component class="javax.swing.JSpinner" name="spnPrice">
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel5">
           <Properties>
@@ -385,6 +394,8 @@
             </Component>
           </SubComponents>
         </Container>
+        <Component class="javax.swing.JTextField" name="txtGiaBan">
+        </Component>
       </SubComponents>
     </Container>
   </SubComponents>

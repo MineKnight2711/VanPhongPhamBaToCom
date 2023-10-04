@@ -17,6 +17,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import ktgiuaky_qlvpp.KeyPressCheck;
 import model.LoaiMatHang;
 import model.MatHang;
 import model.NhanVienSession;
@@ -32,6 +33,7 @@ public class frmSanPham extends javax.swing.JFrame {
     private List<MatHang> listMatHang = new ArrayList<>();
     private List<LoaiMatHang> listLoaiMatHang = new ArrayList<>();
     private static NhanVienSession currentNhanVien;
+    private KeyPressCheck keyCheck;
     /**
      * Creates new form FormSanPham
      * @param loginNhanVien
@@ -43,9 +45,16 @@ public class frmSanPham extends javax.swing.JFrame {
         frmSanPham.currentNhanVien=loginNhanVien;
         txtMoTa.setLineWrap(true);
         txtMoTa.setWrapStyleWord(true);
+        keyCheck = new KeyPressCheck();
+        CheckKeyPress();
         loadComboBox();
         textChange();
         refreshData();
+        if(loginNhanVien.getLoggedInNhanVien().isLaQuanLy())
+            btnReturn.setVisible(true);
+        else
+            btnReturn.setVisible(false);
+        
     }
     private void loadComboBox(){
         listLoaiMatHang = loaiMatHangCRUD.getAll();
@@ -78,7 +87,7 @@ public class frmSanPham extends javax.swing.JFrame {
                 {
                     btnEdit.setEnabled(false);
                     btnDelete.setEnabled(false);
-                    if( txtTenMH.getText().isEmpty() || txtMoTa.getText().isEmpty())
+                    if( txtTenMH.getText().isEmpty() || txtMoTa.getText().isEmpty() || txtGiaBan.getText().isEmpty())
                         btnAdd.setEnabled(false);                   
                     else
                         btnAdd.setEnabled(true);
@@ -93,7 +102,7 @@ public class frmSanPham extends javax.swing.JFrame {
                     else 
                     {
                         btnDelete.setEnabled(true);
-                        if(txtTenMH.getText().isEmpty() || txtMoTa.getText().isEmpty())
+                        if(txtTenMH.getText().isEmpty() || txtMoTa.getText().isEmpty() || txtGiaBan.getText().isEmpty())
                             btnEdit.setEnabled(false);
                         else
                             btnEdit.setEnabled(true);
@@ -104,7 +113,13 @@ public class frmSanPham extends javax.swing.JFrame {
         };
         txtTenMH.getDocument().addDocumentListener(textChangeListener);
         txtMoTa.getDocument().addDocumentListener(textChangeListener);
+        txtGiaBan.getDocument().addDocumentListener(textChangeListener);
     }
+    
+    private void CheckKeyPress(){
+        txtGiaBan.addKeyListener(keyCheck.OnlyNumberTextField());
+    } 
+    
     private void loadVoHieuHoa(boolean isVoHieuHoa){
         if(isVoHieuHoa)
             cbVoHieuHoa.setSelected(true);
@@ -123,10 +138,11 @@ public class frmSanPham extends javax.swing.JFrame {
                     MatHang selectedMatHang = listMatHang.get(selectedRow);
                     txtMaMH.setText(selectedMatHang.getMaMH());
                     txtTenMH.setText(selectedMatHang.getTenMH());
-                    spnPrice.setValue(selectedMatHang.getGiaBan());
+                    txtGiaBan.setText(Double.toString(selectedMatHang.getGiaBan()));
                     cmbLoai.setSelectedItem(selectedMatHang.getMaLoaiMH());
                     txtMoTa.setText(selectedMatHang.getMota());
                     cbmDvt.setSelectedItem(selectedMatHang.getDvt());
+                    cbVoHieuHoa.setSelected(selectedMatHang.isVoHieuHoa());
                     loadVoHieuHoa(selectedMatHang.isVoHieuHoa());
                 }
             }
@@ -170,6 +186,7 @@ public class frmSanPham extends javax.swing.JFrame {
         btnDelete = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
         btnReturn = new javax.swing.JButton();
+        btnCancel1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblData = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
@@ -179,7 +196,6 @@ public class frmSanPham extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         cmbLoai = new javax.swing.JComboBox<>();
         txtMaMH = new javax.swing.JTextField();
-        spnPrice = new javax.swing.JSpinner();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         cbmDvt = new javax.swing.JComboBox<>();
@@ -188,6 +204,7 @@ public class frmSanPham extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtMoTa = new javax.swing.JTextArea();
+        txtGiaBan = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -226,6 +243,13 @@ public class frmSanPham extends javax.swing.JFrame {
             }
         });
 
+        btnCancel1.setText("Quản lý loại mặt hàng");
+        btnCancel1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancel1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -240,6 +264,8 @@ public class frmSanPham extends javax.swing.JFrame {
                 .addGap(84, 84, 84)
                 .addComponent(btnCancel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnCancel1)
+                .addGap(32, 32, 32)
                 .addComponent(btnReturn, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -251,6 +277,7 @@ public class frmSanPham extends javax.swing.JFrame {
                     .addComponent(btnDelete, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnCancel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnCancel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnReturn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -260,7 +287,7 @@ public class frmSanPham extends javax.swing.JFrame {
 
             },
             new String [] {
-                "STT", "Delete", "Nhóm mặt hàng", "Mã mặt hàng", "Mặt hàng", "Giá bán", "DVT", "Mô tả"
+                "STT", "Vô hiệu", "Nhóm mặt hàng", "Mã mặt hàng", "Mặt hàng", "Giá bán", "DVT", "Mô tả"
             }
         ) {
             Class[] types = new Class [] {
@@ -328,8 +355,7 @@ public class frmSanPham extends javax.swing.JFrame {
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(cmbLoai, 0, 105, Short.MAX_VALUE)
-                                    .addComponent(txtMaMH)
-                                    .addComponent(spnPrice))
+                                    .addComponent(txtMaMH))
                                 .addGap(33, 33, 33)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel5)
@@ -340,8 +366,9 @@ public class frmSanPham extends javax.swing.JFrame {
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addComponent(cbmDvt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(26, 26, 26)
-                                        .addComponent(cbVoHieuHoa, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 748, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(cbVoHieuHoa, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 748, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtGiaBan, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jLabel1))
                 .addContainerGap(189, Short.MAX_VALUE))
         );
@@ -371,9 +398,9 @@ public class frmSanPham extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(spnPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addComponent(txtGiaBan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -411,10 +438,11 @@ public class frmSanPham extends javax.swing.JFrame {
         MatHang matHang = new MatHang();
         matHang.setMaMH("");
         matHang.setTenMH(txtTenMH.getText());
-        matHang.setGiaBan(Double.parseDouble(spnPrice.getValue().toString()));
+        matHang.setGiaBan(Double.parseDouble(txtGiaBan.getText()));
         matHang.setDvt(cbmDvt.getSelectedItem().toString());
         matHang.setMaLoaiMH(loaiMatHangCRUD.getByTenLoaiMH(cmbLoai.getSelectedItem().toString()));
         matHang.setMota(txtMoTa.getText());
+        matHang.setVoHieuHoa(cbVoHieuHoa.isSelected());
         try {
             matHangCRUD.addData(matHang);
         } catch (SQLException ex) {
@@ -444,10 +472,11 @@ public class frmSanPham extends javax.swing.JFrame {
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         MatHang matHang = matHangCRUD.findByMaMH(txtMaMH.getText());
         matHang.setTenMH(txtTenMH.getText());
-        matHang.setGiaBan(Double.parseDouble(spnPrice.getValue().toString()));
+        matHang.setGiaBan(Double.parseDouble(txtGiaBan.getText()));
         matHang.setDvt(cbmDvt.getSelectedItem().toString());
         matHang.setMaLoaiMH(loaiMatHangCRUD.getByTenLoaiMH(cmbLoai.getSelectedItem().toString()));
         matHang.setMota(txtMoTa.getText());
+        matHang.setVoHieuHoa(cbVoHieuHoa.isSelected());
         matHangCRUD.updateMatHang(matHang);
         refreshData();
     }//GEN-LAST:event_btnEditActionPerformed
@@ -463,6 +492,13 @@ public class frmSanPham extends javax.swing.JFrame {
         qlnv.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnReturnActionPerformed
+
+    private void btnCancel1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancel1ActionPerformed
+        // TODO add your handling code here:
+        frmLoaiMatHang open = new frmLoaiMatHang();
+        open.setVisible(true);
+        
+    }//GEN-LAST:event_btnCancel1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -503,6 +539,7 @@ public class frmSanPham extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnCancel;
+    private javax.swing.JButton btnCancel1;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnReturn;
@@ -520,8 +557,8 @@ public class frmSanPham extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JSpinner spnPrice;
     private javax.swing.JTable tblData;
+    private javax.swing.JTextField txtGiaBan;
     private javax.swing.JTextField txtMaMH;
     private javax.swing.JTextArea txtMoTa;
     private javax.swing.JTextField txtTenMH;

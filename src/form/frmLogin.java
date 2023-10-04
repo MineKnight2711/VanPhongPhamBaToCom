@@ -198,7 +198,7 @@ public class frmLogin extends javax.swing.JFrame {
                 this.dispose();
             }
             else{
-                frmSanPham qlmh=new frmSanPham(newNhanVienSession);
+                frmSanPham qlmh = new frmSanPham(newNhanVienSession);
                 qlmh.setVisible(true);
                 this.dispose();
             }

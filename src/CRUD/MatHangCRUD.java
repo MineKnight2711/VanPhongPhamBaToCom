@@ -5,6 +5,7 @@
 package CRUD;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -65,10 +66,15 @@ public class MatHangCRUD {
     }
     public boolean addData(MatHang matHang) throws SQLException {
         try{
-            String query = String.format("INSERT INTO mathang VALUES ('%s', '%s', '%f', '%s', '%s', '%s', '%s')",
-                                    matHang.getMaMH(), matHang.getTenMH(), matHang.getGiaBan(), matHang.getDvt(), 
-                                    matHang.getMaLoaiMH(),matHang.getMota(), 0);
-            stmt.executeUpdate(query);
+            String query ="INSERT INTO mathang VALUES ('', ?, ?, ?, ?, ?, ?)";
+            PreparedStatement statement = con.prepareStatement(query);
+            statement.setString(1, matHang.getTenMH());
+            statement.setDouble(2, matHang.getGiaBan());
+            statement.setString(3, matHang.getDvt());
+            statement.setString(4, matHang.getMaLoaiMH());
+            statement.setString(5, matHang.getMota());
+            statement.setBoolean(6, false);
+            statement.execute();
             JOptionPane.showMessageDialog(null, "Thêm mặt hàng mới thành công");
             return true;    
         }catch(SQLException ex){
@@ -99,11 +105,16 @@ public class MatHangCRUD {
     }
     public boolean updateMatHang(MatHang matHang) {
         try{
-            String query = String.format(
-          "UPDATE mathang SET TenMH = '%s', GiaBan = '%f', Dvt = '%s', MaLoaiHang = '%s', MoTa = '%s', VoHieuHoa = '%s' WHERE MaMH = '" + matHang.getMaMH() + "'",
-            matHang.getTenMH(), matHang.getGiaBan(), matHang.getDvt(), 
-            matHang.getMaLoaiMH(),matHang.getMota(), 0);
-            stmt.executeUpdate(query);
+            String query = "UPDATE mathang SET TenMH = ?, GiaBan = ?, Dvt = ?, MaLoaiHang = ?, MoTa = ?, VoHieuHoa = ? WHERE MaMH = ?" ;
+            PreparedStatement statement = con.prepareStatement(query);
+            statement.setString(1, matHang.getTenMH());
+            statement.setDouble(2, matHang.getGiaBan());
+            statement.setString(3, matHang.getDvt());
+            statement.setString(4, matHang.getMaLoaiMH());
+            statement.setString(5, matHang.getMota());
+            statement.setBoolean(6, matHang.isVoHieuHoa());
+            statement.setString(7, matHang.getMaMH());
+            statement.execute();
             JOptionPane.showMessageDialog(null, "Cập nhật mặt hàng mới thành công");
             return true;    
         }catch(SQLException ex){
